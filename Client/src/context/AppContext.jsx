@@ -1,0 +1,42 @@
+
+import { createContext, useEffect, useState } from "react";
+import React from "react";
+import { jobsData } from "../assets/assets";
+
+export const AppContext = createContext()
+
+
+export const AppContextProvider = (props) => {
+
+    //adding context for search filter job title and location then access it in the hero section
+    const [searchFilter, setSearchFilter] = useState({
+        title:'',
+        location:'',
+    })
+
+    const [isSearched, setIsSearched] = useState(false)
+
+    const [jobs, setJobs] = useState([])
+
+    //function to fetch job data from the server
+    const fetchJobs = async () =>{
+        setJobs(jobsData)
+    }
+
+    useEffect(()=>{
+        fetchJobs()
+    },[])
+    
+    // Add your context values here
+    const value = {
+        // search filter functionality
+        setSearchFilter,searchFilter,
+        isSearched, setIsSearched,
+
+        jobs, setJobs
+    }
+    return (<AppContext.Provider value={value}>
+    
+        {props.children}
+    </AppContext.Provider>)
+}
